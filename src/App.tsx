@@ -1,25 +1,43 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { AnimatePresence } from "framer-motion";
+import React from "react";
+import { Route, Routes, useLocation } from "react-router-dom";
+import Cursor from "./components/Cursor";
+import Navigation from "./components/Navigation";
+import CursorContextProvider from "./context/CursorContext";
+import About from "./routes/About";
+import ArtConnection from "./routes/ArtConnection";
+import Contact from "./routes/Contact";
+import CryptoBase from "./routes/CryptoBase";
+import Home from "./routes/Home";
+import NotFound from "./routes/NotFound";
+import Wonder from "./routes/Wonder";
+import Work from "./routes/Work";
 
+// Main App component
 function App() {
+  // Get the current location from React Router
+  const location = useLocation();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <CursorContextProvider>
+        <Cursor />
+        <Navigation />
+
+        <AnimatePresence initial={true}>
+          <Routes location={location} key={location.pathname}>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/work" element={<Work />} />
+            <Route path="/art-connection" element={<ArtConnection />} />
+            <Route path="/wonder" element={<Wonder />} />
+            <Route path="/crypto-base" element={<CryptoBase />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </AnimatePresence>
+      </CursorContextProvider>
+    </>
   );
 }
 
